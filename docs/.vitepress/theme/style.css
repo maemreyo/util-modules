@@ -1,369 +1,188 @@
-/**
- * Customize default theme styling by overriding CSS variables.
- * https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css
- */
-
 :root {
-  /* Brand Colors */
   --vp-c-brand-1: #3eaf7c;
-  --vp-c-brand-2: #42b883;
-  --vp-c-brand-3: #35a060;
-  --vp-c-brand-soft: rgba(66, 184, 131, 0.14);
-  
-  /* Custom Colors */
-  --vp-c-primary: #3eaf7c;
-  --vp-c-primary-light: #42b883;
-  --vp-c-primary-lighter: #4abf8a;
-  --vp-c-primary-dark: #35a060;
-  --vp-c-primary-darker: #2c8a4d;
-  
-  /* Typography */
-  --vp-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif;
-  --vp-font-family-mono: 'Fira Code', 'JetBrains Mono', Consolas, Monaco,
-    'Andale Mono', 'Ubuntu Mono', monospace;
-    
-  /* Home page customizations */
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(
-    120deg,
-    #3eaf7c 30%,
-    #42b883
-  );
-  
-  /* Button hover states */
-  --vp-button-brand-hover-border: transparent;
-  --vp-button-brand-hover-text: #fff;
-  --vp-button-brand-hover-bg: #35a060;
-}
-
-.dark {
-  --vp-c-brand-1: #42b883;
   --vp-c-brand-2: #3eaf7c;
-  --vp-c-brand-3: #4abf8a;
+  --vp-c-brand-3: #3eaf7c;
 }
 
-/* Custom component styles */
+/* Package Info Component */
 .package-info {
-  margin: 1.5rem 0;
-  padding: 1rem 1.5rem;
+  border: 1px solid var(--vp-c-border);
   border-radius: 8px;
-  background-color: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-divider);
+  padding: 20px;
+  margin: 20px 0;
+  background: var(--vp-c-bg-soft);
 }
 
 .package-info__header {
   display: flex;
   align-items: center;
-  margin-bottom: 0.5rem;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .package-info__icon {
-  font-size: 1.5rem;
-  margin-right: 0.75rem;
+  font-size: 24px;
 }
 
 .package-info__title {
-  font-size: 1.1rem;
+  font-size: 20px;
   font-weight: 600;
-  color: var(--vp-c-text-1);
+  margin: 0;
 }
 
 .package-info__version {
-  margin-left: auto;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.85rem;
-  background-color: var(--vp-c-brand-soft);
+  font-family: var(--vp-font-family-mono);
+  font-size: 14px;
+  color: var(--vp-c-text-2);
+  background: var(--vp-c-default-soft);
+  padding: 2px 6px;
   border-radius: 4px;
-  color: var(--vp-c-brand-1);
 }
 
-/* Code playground styles */
+.badge {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge--stable {
+  background: #10b981;
+  color: white;
+}
+
+.badge--beta {
+  background: #f59e0b;
+  color: white;
+}
+
+.badge--deprecated {
+  background: #ef4444;
+  color: white;
+}
+
+/* Code Playground Component */
 .code-playground {
-  margin: 2rem 0;
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid var(--vp-c-border);
   border-radius: 8px;
   overflow: hidden;
+  margin: 20px 0;
 }
 
 .code-playground__header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 1rem;
-  background-color: var(--vp-c-bg-soft);
-  border-bottom: 1px solid var(--vp-c-divider);
+  padding: 12px 16px;
+  background: var(--vp-c-bg-soft);
+  border-bottom: 1px solid var(--vp-c-border);
 }
 
 .code-playground__title {
-  font-weight: 600;
-  margin-right: auto;
+  font-weight: 500;
+  color: var(--vp-c-text-1);
 }
 
 .code-playground__actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
 .code-playground__button {
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
-  border: 1px solid var(--vp-c-divider);
+  padding: 4px 8px;
+  border: 1px solid var(--vp-c-border);
   border-radius: 4px;
-  background-color: var(--vp-c-bg);
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
   cursor: pointer;
-  transition: all 0.2s;
+  font-size: 12px;
 }
 
 .code-playground__button:hover {
-  background-color: var(--vp-c-bg-soft);
-  border-color: var(--vp-c-brand-1);
+  background: var(--vp-c-bg-soft);
 }
 
 .code-playground__editor {
-  position: relative;
+  padding: 16px;
 }
 
 .code-playground__output {
-  padding: 1rem;
-  background-color: var(--vp-c-bg-alt);
-  border-top: 1px solid var(--vp-c-divider);
-  font-family: var(--vp-font-family-mono);
-  font-size: 0.875rem;
+  border-top: 1px solid var(--vp-c-border);
+  background: var(--vp-c-bg-alt);
+  padding: 16px;
 }
 
-/* API table styles */
+.code-playground__output pre {
+  margin: 0;
+  font-size: 14px;
+  color: var(--vp-c-text-1);
+}
+
+/* API Table Component */
 .api-table {
   width: 100%;
-  margin: 1.5rem 0;
   border-collapse: collapse;
+  margin: 20px 0;
 }
 
 .api-table th,
 .api-table td {
-  padding: 0.75rem 1rem;
+  padding: 12px;
   text-align: left;
-  border-bottom: 1px solid var(--vp-c-divider);
+  border-bottom: 1px solid var(--vp-c-border);
 }
 
 .api-table th {
+  background: var(--vp-c-bg-soft);
   font-weight: 600;
-  background-color: var(--vp-c-bg-soft);
-}
-
-.api-table tbody tr:hover {
-  background-color: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-1);
 }
 
 .api-table__param {
   font-family: var(--vp-font-family-mono);
-  font-size: 0.9rem;
-  color: var(--vp-c-brand-1);
+  font-size: 14px;
+  background: var(--vp-c-default-soft);
+  padding: 2px 4px;
+  border-radius: 3px;
 }
 
 .api-table__type {
   font-family: var(--vp-font-family-mono);
-  font-size: 0.85rem;
-  padding: 0.15rem 0.4rem;
-  background-color: var(--vp-c-bg-alt);
-  border-radius: 3px;
+  font-size: 14px;
+  color: var(--vp-c-brand-1);
 }
 
 .api-table__required {
-  font-size: 0.75rem;
-  padding: 0.15rem 0.4rem;
-  background-color: var(--vp-c-danger-soft);
-  color: var(--vp-c-danger-1);
-  border-radius: 3px;
-}
-
-/* Custom badges */
-.badge {
-  display: inline-block;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.875rem;
+  font-size: 12px;
   font-weight: 500;
-  line-height: 1;
-  border-radius: 4px;
-  margin: 0 0.25rem;
+  color: #ef4444;
 }
 
-.badge--beta {
-  background-color: var(--vp-c-warning-soft);
-  color: var(--vp-c-warning-1);
-}
-
-.badge--stable {
-  background-color: var(--vp-c-success-soft);
-  color: var(--vp-c-success-1);
-}
-
-.badge--deprecated {
-  background-color: var(--vp-c-danger-soft);
-  color: var(--vp-c-danger-1);
-}
-
-/* Feature grid */
+/* Feature Grid */
 .feature-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
 }
 
 .feature-card {
-  padding: 1.5rem;
-  border: 1px solid var(--vp-c-divider);
+  border: 1px solid var(--vp-c-border);
   border-radius: 8px;
-  transition: all 0.3s ease;
+  padding: 16px;
+  background: var(--vp-c-bg-soft);
 }
 
-.feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-  border-color: var(--vp-c-brand-1);
+.feature-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: var(--vp-c-text-1);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .package-info {
-    padding: 0.75rem 1rem;
-  }
-  
-  .code-playground__header {
-    flex-wrap: wrap;
-  }
-  
-  .api-table {
-    font-size: 0.875rem;
-  }
-  
-  .api-table th,
-  .api-table td {
-    padding: 0.5rem;
-  }
+.feature-card p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--vp-c-text-2);
 }
-
-/* Animation utilities */
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-in {
-  animation: fade-in 0.3s ease-out;
-}
-
-/* Print styles */
-@media print {
-  .code-playground__actions,
-  .VPNav,
-  .VPSidebar,
-  .VPDocFooter {
-    display: none !important;
-  }
-}
-
-# .github/workflows/docs.yml
-name: Deploy Documentation
-
-on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'docs/**'
-      - 'packages/*/src/**'
-      - 'packages/*/README.md'
-      - '.github/workflows/docs.yml'
-  pull_request:
-    paths:
-      - 'docs/**'
-      - 'packages/*/src/**'
-      
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow only one concurrent deployment
-concurrency:
-  group: pages
-  cancel-in-progress: false
-
-jobs:
-  # Build job
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Not needed for VitePress but useful for git history
-          
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-          run_install: false
-          
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-          
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-            
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-        
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-        
-      - name: Build packages
-        run: pnpm build
-        
-      - name: Generate API documentation
-        run: pnpm docs:api
-        
-      - name: Build documentation site
-        run: pnpm docs:build
-        
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs/.vitepress/dist
-          
-  # Deployment job
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4

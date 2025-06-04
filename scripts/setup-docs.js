@@ -62,19 +62,425 @@ async function installDependencies() {
   log.section('Installing Documentation Dependencies');
   
   try {
+    // First, try to install with --ignore-scripts to avoid native dependency issues
+    log.info('Installing dependencies with --ignore-scripts to avoid native compilation issues...');
     execSync(
-      'pnpm add -D -w vitepress typedoc typedoc-plugin-markdown vue @vueuse/core',
+      'pnpm add -D -w vitepress typedoc typedoc-plugin-markdown vue @vueuse/core --ignore-scripts',
       { cwd: rootDir, stdio: 'inherit' }
     );
-    log.success('Dependencies installed successfully');
+    
+    log.success('Dependencies installed successfully (with --ignore-scripts)');
+    log.warning('Note: Some packages may have skipped post-install scripts to avoid compilation issues');
+    
   } catch (error) {
-    log.error('Failed to install dependencies');
-    throw error;
+    log.warning('Failed with --ignore-scripts, trying alternative approach...');
+    
+    try {
+      // Try installing without the problematic lz4 dependency
+      log.info('Trying to install without problematic native dependencies...');
+      execSync(
+        'pnpm add -D -w vitepress typedoc typedoc-plugin-markdown vue @vueuse/core --no-optional',
+        { cwd: rootDir, stdio: 'inherit' }
+      );
+      
+      log.success('Dependencies installed successfully (without optional dependencies)');
+      
+    } catch (secondError) {
+      log.error('Failed to install dependencies with both methods');
+      log.info('Possible solutions:');
+      log.info('1. Install Python distutils: pip install setuptools');
+      log.info('2. Use Node.js 18 instead of 20');
+      log.info('3. Set PYTHON environment variable to Python 3.11 or earlier');
+      log.info('4. Install Xcode command line tools: xcode-select --install');
+      
+      // Don't throw error, continue with setup
+      log.warning('Continuing setup without installing dependencies. You may need to install them manually.');
+    }
   }
+}
+
+async function createVitePressConfig() {
+  log.section('Creating VitePress Configuration');
+  
+  const config = `import { defineConfig } from 'vitepress';
+
+export default defineConfig({
+  title: 'Util Modules',
+  description: 'A collection of utility modules for modern web development',
+  
+  // Paths
+  srcDir: './src',
+  outDir: './dist',
+  cacheDir: './.vitepress/cache',
+  
+  // Theme
+  themeConfig: {
+    logo: '/logo.svg',
+    
+    nav: [
+      { text: 'Guide', link: '/guide/' },
+      { text: 'Packages', link: '/packages/' },
+      { text: 'API', link: '/api/' }
+    ],
+    
+    sidebar: {
+      '/guide/': [
+        {
+          text: 'Getting Started',
+          items: [
+            { text: 'Introduction', link: '/guide/' },
+            { text: 'Installation', link: '/guide/installation' },
+            { text: 'Quick Start', link: '/guide/quick-start' }
+          ]
+        }
+      ],
+      
+      '/packages/': [
+        {
+          text: 'Packages',
+          items: [
+            { text: 'Overview', link: '/packages/' },
+            { text: 'Chrome Storage', link: '/packages/storage/' },
+            { text: 'AI Toolkit', link: '/packages/ai-toolkit/' },
+            { text: 'Content Extractor', link: '/packages/content-extractor/' },
+            { text: 'Analysis', link: '/packages/analysis/' }
+          ]
+        }
+      ]
+    },
+    
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/matthew-ngo/util-modules' }
+    ],
+    
+    footer: {
+      message: 'Released under the MIT License.',
+      copyright: 'Copyright © 2025 Matthew Ngo'
+    },
+    
+    search: {
+      provider: 'local'
+    }
+  },
+  
+  // Markdown
+  markdown: {
+    lineNumbers: true,
+    theme: {
+      light: 'github-light',
+      dark: 'github-dark'
+    }
+  },
+  
+  // Build
+  build: {
+    chunkSizeWarningLimit: 1600
+  }
+});`;
+
+  await writeFile(
+    join(rootDir, 'docs/.vitepress/config.ts'),
+    config
+  );
+  log.success('Created VitePress configuration');
+}
+
+async function createThemeFiles() {
+  log.section('Creating Theme Files');
+  
+  // Create theme index
+  const themeIndex = `import DefaultTheme from 'vitepress/theme';
+import PackageInfo from './components/PackageInfo.vue';
+import CodePlayground from './components/CodePlayground.vue';
+import ApiTable from './components/ApiTable.vue';
+import './style.css';
+
+export default {
+  extends: DefaultTheme,
+  enhanceApp({ app }) {
+    app.component('PackageInfo', PackageInfo);
+    app.component('CodePlayground', CodePlayground);
+    app.component('ApiTable', ApiTable);
+  }
+};`;
+
+  await writeFile(
+    join(rootDir, 'docs/.vitepress/theme/index.ts'),
+    themeIndex
+  );
+  log.success('Created theme index');
+  
+  // Create custom styles
+  const customStyles = `:root {
+  --vp-c-brand-1: #3eaf7c;
+  --vp-c-brand-2: #3eaf7c;
+  --vp-c-brand-3: #3eaf7c;
+}
+
+/* Package Info Component */
+.package-info {
+  border: 1px solid var(--vp-c-border);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  background: var(--vp-c-bg-soft);
+}
+
+.package-info__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.package-info__icon {
+  font-size: 24px;
+}
+
+.package-info__title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.package-info__version {
+  font-family: var(--vp-font-family-mono);
+  font-size: 14px;
+  color: var(--vp-c-text-2);
+  background: var(--vp-c-default-soft);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.badge {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge--stable {
+  background: #10b981;
+  color: white;
+}
+
+.badge--beta {
+  background: #f59e0b;
+  color: white;
+}
+
+.badge--deprecated {
+  background: #ef4444;
+  color: white;
+}
+
+/* Code Playground Component */
+.code-playground {
+  border: 1px solid var(--vp-c-border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.code-playground__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--vp-c-bg-soft);
+  border-bottom: 1px solid var(--vp-c-border);
+}
+
+.code-playground__title {
+  font-weight: 500;
+  color: var(--vp-c-text-1);
+}
+
+.code-playground__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.code-playground__button {
+  padding: 4px 8px;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 4px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.code-playground__button:hover {
+  background: var(--vp-c-bg-soft);
+}
+
+.code-playground__editor {
+  padding: 16px;
+}
+
+.code-playground__output {
+  border-top: 1px solid var(--vp-c-border);
+  background: var(--vp-c-bg-alt);
+  padding: 16px;
+}
+
+.code-playground__output pre {
+  margin: 0;
+  font-size: 14px;
+  color: var(--vp-c-text-1);
+}
+
+/* API Table Component */
+.api-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.api-table th,
+.api-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--vp-c-border);
+}
+
+.api-table th {
+  background: var(--vp-c-bg-soft);
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+.api-table__param {
+  font-family: var(--vp-font-family-mono);
+  font-size: 14px;
+  background: var(--vp-c-default-soft);
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.api-table__type {
+  font-family: var(--vp-font-family-mono);
+  font-size: 14px;
+  color: var(--vp-c-brand-1);
+}
+
+.api-table__required {
+  font-size: 12px;
+  font-weight: 500;
+  color: #ef4444;
+}
+
+/* Feature Grid */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.feature-card {
+  border: 1px solid var(--vp-c-border);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--vp-c-bg-soft);
+}
+
+.feature-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: var(--vp-c-text-1);
+}
+
+.feature-card p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--vp-c-text-2);
+}`;
+
+  await writeFile(
+    join(rootDir, 'docs/.vitepress/theme/style.css'),
+    customStyles
+  );
+  log.success('Created custom styles');
 }
 
 async function createPackageDocumentation() {
   log.section('Creating Package Documentation Templates');
+  
+  // Create main index
+  const mainIndex = `# Util Modules
+
+Welcome to the **Util Modules** documentation! This is a collection of utility modules designed to make modern web development easier and more efficient.
+
+## 🚀 Quick Start
+
+Choose a package to get started:
+
+<div class="feature-grid">
+  <div class="feature-card">
+    <h3>🔐 Chrome Storage</h3>
+    <p>Secure, encrypted storage wrapper for Chrome extensions</p>
+    <a href="/packages/storage/">Get Started →</a>
+  </div>
+  <div class="feature-card">
+    <h3>🤖 AI Toolkit</h3>
+    <p>Unified interface for multiple AI providers</p>
+    <a href="/packages/ai-toolkit/">Get Started →</a>
+  </div>
+  <div class="feature-card">
+    <h3>📄 Content Extractor</h3>
+    <p>Extract and parse content from various sources</p>
+    <a href="/packages/content-extractor/">Get Started →</a>
+  </div>
+  <div class="feature-card">
+    <h3>📊 Analysis</h3>
+    <p>Data analysis and processing utilities</p>
+    <a href="/packages/analysis/">Get Started →</a>
+  </div>
+</div>
+
+## 📦 Installation
+
+All packages are available on npm and can be installed individually:
+
+\`\`\`bash
+# Install specific packages
+pnpm add @matthew.ngo/storage
+pnpm add @matthew.ngo/ai-toolkit
+
+# Or install all at once
+pnpm add @matthew.ngo/storage @matthew.ngo/ai-toolkit @matthew.ngo/content-extractor @matthew.ngo/analysis
+\`\`\`
+
+## 🛠️ Features
+
+- **TypeScript First** - Full type safety and excellent IntelliSense
+- **Tree Shakeable** - Only import what you need
+- **Well Tested** - Comprehensive test coverage
+- **Documentation** - Detailed docs with examples
+- **Modern** - Built with latest standards and best practices
+
+## 📖 Documentation
+
+- [Installation Guide](/guide/installation)
+- [Quick Start](/guide/quick-start)
+- [API Reference](/api/)
+- [Examples](https://github.com/matthew-ngo/util-modules/tree/main/examples)
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](https://github.com/matthew-ngo/util-modules/blob/main/CONTRIBUTING.md) for details.
+
+## 📄 License
+
+MIT License - see [LICENSE](https://github.com/matthew-ngo/util-modules/blob/main/LICENSE) for details.
+`;
+
+  await writeFile(join(rootDir, 'docs/src/index.md'), mainIndex);
+  log.success('Created main documentation index');
   
   // Storage package documentation
   const storageIndex = `# Chrome Storage
@@ -139,25 +545,6 @@ await storage.set('user', {
 // Retrieve and decrypt automatically
 const user = await storage.get('user');
 \`\`\`
-
-## Try It Out
-
-<CodePlayground 
-  title="Chrome Storage Example"
-  code="\`\`\`javascript
-// Try modifying this code!
-const storage = createStorage({ prefix: 'demo_' });
-
-// Store some data
-await storage.set('counter', 0);
-
-// Increment counter
-const current = await storage.get('counter');
-await storage.set('counter', current + 1);
-
-console.log('Counter:', await storage.get('counter'));
-\`\`\`"
-/>
 
 ## Next Steps
 
@@ -404,6 +791,32 @@ defineProps<Props>();
   log.success('Created ApiTable component');
 }
 
+async function createTypedocConfig() {
+  log.section('Creating TypeDoc Configuration');
+  
+  const typedocConfig = `{
+  "entryPoints": [
+    "./packages/*/src/index.ts"
+  ],
+  "out": "./docs/src/api",
+  "plugin": ["typedoc-plugin-markdown"],
+  "theme": "markdown",
+  "hideGenerator": true,
+  "disableSources": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeExternals": true,
+  "readme": "none",
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": true
+  }
+}`;
+
+  await writeFile(join(rootDir, 'typedoc.json'), typedocConfig);
+  log.success('Created TypeDoc configuration');
+}
+
 async function updatePackageJson() {
   log.section('Updating package.json');
   
@@ -458,8 +871,11 @@ ${colors.reset}
   try {
     await createDirectoryStructure();
     await installDependencies();
+    await createVitePressConfig();
+    await createThemeFiles();
     await createPackageDocumentation();
     await createComponents();
+    await createTypedocConfig();
     await updatePackageJson();
     await createExampleFiles();
     
@@ -470,30 +886,34 @@ ${colors.green}Documentation system has been set up successfully!${colors.reset}
 
 ${colors.bright}Next steps:${colors.reset}
 
-1. Start the development server:
+1. If dependencies failed to install, try manually:
+   ${colors.cyan}pnpm add -D -w vitepress typedoc typedoc-plugin-markdown vue @vueuse/core --ignore-scripts${colors.reset}
+
+2. Start the development server:
    ${colors.cyan}pnpm docs:dev${colors.reset}
 
-2. Build API documentation:
+3. Build API documentation:
    ${colors.cyan}pnpm docs:api${colors.reset}
 
-3. Build for production:
+4. Build for production:
    ${colors.cyan}pnpm docs:build${colors.reset}
 
-4. Preview production build:
-   ${colors.cyan}pnpm docs:preview${colors.reset}
+${colors.bright}To fix the lz4/distutils error:${colors.reset}
+
+${colors.yellow}Option 1 - Install Python setuptools:${colors.reset}
+   pip install setuptools
+
+${colors.yellow}Option 2 - Use older Python:${colors.reset}
+   export PYTHON=/usr/bin/python3.11
+
+${colors.yellow}Option 3 - Use Node.js 18:${colors.reset}
+   nvm use 18
 
 ${colors.bright}Customize your docs:${colors.reset}
 
 - Edit ${colors.yellow}docs/.vitepress/config.ts${colors.reset} for site configuration
 - Modify ${colors.yellow}docs/.vitepress/theme/style.css${colors.reset} for custom styling
 - Add content in ${colors.yellow}docs/src/${colors.reset} directory
-- Create examples in each package's ${colors.yellow}examples/${colors.reset} folder
-
-${colors.bright}Tips:${colors.reset}
-- Use ${colors.cyan}<PackageInfo />${colors.reset} component for package headers
-- Use ${colors.cyan}<CodePlayground />${colors.reset} for interactive examples  
-- Use ${colors.cyan}<ApiTable />${colors.reset} for API documentation
-- Enable search by adding Algolia DocSearch
 
 Happy documenting! 📚
 `);

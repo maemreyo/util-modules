@@ -1,144 +1,66 @@
----
-layout: home
+# Util Modules
 
-hero:
-  name: "Util Modules"
-  text: "Modern Utility Collection"
-  tagline: Enterprise-grade TypeScript utilities for web development
-  image:
-    src: /logo.svg
-    alt: Util Modules
-  actions:
-    - theme: brand
-      text: Get Started
-      link: /guide/getting-started
-    - theme: alt
-      text: View on GitHub
-      link: https://github.com/matthew-ngo/util-modules
+Welcome to the **Util Modules** documentation! This is a collection of utility modules designed to make modern web development easier and more efficient.
 
-features:
-  - icon: 🔐
-    title: Chrome Storage
-    details: Advanced Chrome extension storage with encryption, compression, and sync capabilities
-    link: /packages/storage/
-    
-  - icon: 🤖
-    title: AI Toolkit
-    details: Multi-provider AI integration with caching, rate limiting, and streaming support
-    link: /packages/ai-toolkit/
-    
-  - icon: 📄
-    title: Content Extractor
-    details: Intelligent content extraction from web pages, PDFs, and various document formats
-    link: /packages/content-extractor/
-    
-  - icon: 📊
-    title: Analysis Engine
-    details: Advanced text and data analysis tools with sentiment analysis and NLP capabilities
-    link: /packages/analysis/
+## 🚀 Quick Start
 
-  - icon: ⚡
-    title: Lightning Fast
-    details: Optimized for performance with tree-shaking and minimal bundle size
-    
-  - icon: 🛡️
-    title: Type Safe
-    details: Built with TypeScript from the ground up with strict type checking
----
+Choose a package to get started:
 
-## Quick Start
+<div class="feature-grid">
+  <div class="feature-card">
+    <h3>🔐 Chrome Storage</h3>
+    <p>Secure, encrypted storage wrapper for Chrome extensions</p>
+    <a href="/packages/storage/">Get Started →</a>
+  </div>
+  <div class="feature-card">
+    <h3>🤖 AI Toolkit</h3>
+    <p>Unified interface for multiple AI providers</p>
+    <a href="/packages/ai-toolkit/">Get Started →</a>
+  </div>
+  <div class="feature-card">
+    <h3>📄 Content Extractor</h3>
+    <p>Extract and parse content from various sources</p>
+    <a href="/packages/content-extractor/">Get Started →</a>
+  </div>
+  <div class="feature-card">
+    <h3>📊 Analysis</h3>
+    <p>Data analysis and processing utilities</p>
+    <a href="/packages/analysis/">Get Started →</a>
+  </div>
+</div>
 
-Get started with Util Modules in under 5 minutes:
+## 📦 Installation
+
+All packages are available on npm and can be installed individually:
 
 ```bash
-# Install with pnpm (recommended)
+# Install specific packages
 pnpm add @matthew.ngo/storage
+pnpm add @matthew.ngo/ai-toolkit
 
-# Install with npm
-npm install @matthew.ngo/ai-toolkit
-
-# Install with yarn
-yarn add @matthew.ngo/content-extractor
+# Or install all at once
+pnpm add @matthew.ngo/storage @matthew.ngo/ai-toolkit @matthew.ngo/content-extractor @matthew.ngo/analysis
 ```
 
-## Why Util Modules?
+## 🛠️ Features
 
-<div class="features">
-  <div class="feature">
-    <h3>🚀 Modern Architecture</h3>
-    <p>Built with the latest web standards and best practices. ESM first, tree-shakeable, and optimized for modern bundlers.</p>
-  </div>
-  
-  <div class="feature">
-    <h3>🧪 Battle Tested</h3>
-    <p>Comprehensive test coverage (>90%) with real-world usage in production applications serving millions of users.</p>
-  </div>
-  
-  <div class="feature">
-    <h3>📚 Excellent Documentation</h3>
-    <p>Detailed API documentation, guides, and examples for every use case. Interactive playground for testing.</p>
-  </div>
-  
-  <div class="feature">
-    <h3>🤝 Active Community</h3>
-    <p>Join our growing community of developers. Get help, share ideas, and contribute to the project.</p>
-  </div>
-</div>
+- **TypeScript First** - Full type safety and excellent IntelliSense
+- **Tree Shakeable** - Only import what you need
+- **Well Tested** - Comprehensive test coverage
+- **Documentation** - Detailed docs with examples
+- **Modern** - Built with latest standards and best practices
 
-## Trusted By
+## 📖 Documentation
 
-<div class="sponsors">
-  <img src="/sponsors/company1.svg" alt="Company 1" />
-  <img src="/sponsors/company2.svg" alt="Company 2" />
-  <img src="/sponsors/company3.svg" alt="Company 3" />
-  <img src="/sponsors/company4.svg" alt="Company 4" />
-</div>
+- [Installation Guide](/guide/installation)
+- [Quick Start](/guide/quick-start)
+- [API Reference](/api/)
+- [Examples](https://github.com/matthew-ngo/util-modules/tree/main/examples)
 
-## Latest Updates
+## 🤝 Contributing
 
-::: info Version 1.0.0 Released! 🎉
-Major release with improved performance, new features, and better TypeScript support.
-[Read the announcement →](/blog/v1-release)
-:::
+We welcome contributions! Please see our [Contributing Guide](https://github.com/matthew-ngo/util-modules/blob/main/CONTRIBUTING.md) for details.
 
-## Get Involved
+## 📄 License
 
-- ⭐ [Star on GitHub](https://github.com/matthew-ngo/util-modules)
-- 🐛 [Report Issues](https://github.com/matthew-ngo/util-modules/issues)
-- 💬 [Join Discussions](https://github.com/matthew-ngo/util-modules/discussions)
-- 🤝 [Contribute](https://github.com/matthew-ngo/util-modules/blob/main/CONTRIBUTING.md)
-
-<style>
-.features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
-}
-
-.feature {
-  padding: 1.5rem;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.feature:hover {
-  border-color: var(--vp-c-brand);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.sponsors {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 2rem 0;
-  filter: grayscale(100%);
-  opacity: 0.7;
-}
-
-.sponsors img {
-  height: 40px;
-}
-</style>
+MIT License - see [LICENSE](https://github.com/matthew-ngo/util-modules/blob/main/LICENSE) for details.
