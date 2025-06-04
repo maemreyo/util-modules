@@ -1,0 +1,68 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+  
+  "projectFolder": ".",
+  
+  "mainEntryPointFilePath": "<projectFolder>/packages/<unscopedPackageName>/dist/index.d.ts",
+  
+  "bundledPackages": [],
+  
+  "compiler": {
+    "tsconfigFilePath": "<projectFolder>/tsconfig.json"
+  },
+  
+  "apiReport": {
+    "enabled": true,
+    "reportFolder": "<projectFolder>/docs/api-reports/",
+    "reportTempFolder": "<projectFolder>/temp/",
+    "reportFileName": "<unscopedPackageName>.api.md",
+    "includeForgottenExports": false
+  },
+  
+  "docModel": {
+    "enabled": true,
+    "apiJsonFilePath": "<projectFolder>/docs/api-json/<unscopedPackageName>.api.json",
+    "includeForgottenExports": false,
+    "projectFolderUrl": "https://github.com/matthew-ngo/util-modules/tree/main/packages/<unscopedPackageName>"
+  },
+  
+  "dtsRollup": {
+    "enabled": true,
+    "untrimmedFilePath": "<projectFolder>/packages/<unscopedPackageName>/dist/<unscopedPackageName>.d.ts",
+    "betaTrimmedFilePath": "",
+    "publicTrimmedFilePath": "<projectFolder>/packages/<unscopedPackageName>/dist/<unscopedPackageName>-public.d.ts",
+    "omitTrimmingComments": false
+  },
+  
+  "tsdocMetadata": {
+    "enabled": false
+  },
+  
+  "messages": {
+    "compilerMessageReporting": {
+      "default": {
+        "logLevel": "warning"
+      }
+    },
+    
+    "extractorMessageReporting": {
+      "default": {
+        "logLevel": "warning"
+      },
+      
+      "ae-missing-release-tag": {
+        "logLevel": "none"
+      }
+    },
+    
+    "tsdocMessageReporting": {
+      "default": {
+        "logLevel": "warning"
+      },
+      
+      "tsdoc-undefined-tag": {
+        "logLevel": "none"
+      }
+    }
+  }
+}
