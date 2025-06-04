@@ -56,7 +56,7 @@ Desktop.ini
 .turbo/
 
 # Changeset
-.changeset/
+# .changeset/
 
 # TypeScript
 *.tsbuildinfo
