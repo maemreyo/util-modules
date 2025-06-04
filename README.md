@@ -1,15 +1,16 @@
 # 🛠️ Util Modules
 
-A comprehensive collection of utility modules for modern web development, built with TypeScript and designed for enterprise-grade applications.
+A comprehensive collection of utility modules for modern web development, built
+with TypeScript and designed for enterprise-grade applications.
 
 ## 📦 Packages
 
-| Package | Version | Description | Status |
-|---------|---------|-------------|--------|
-| [`@matthew.ngo/chrome-storage`](./storage) | ![npm](https://img.shields.io/npm/v/@matthew.ngo/chrome-storage) | Advanced Chrome storage with encryption, compression, and sync | ✅ Stable |
-| [`@matthew.ngo/ai-toolkit`](./ai-toolkit) | ![npm](https://img.shields.io/npm/v/@matthew.ngo/ai-toolkit) | Multi-provider AI toolkit with caching and rate limiting | ✅ Stable |
-| [`@matthew.ngo/content-extractor`](./content-extractor) | ![npm](https://img.shields.io/npm/v/@matthew.ngo/content-extractor) | Intelligent content extraction from web pages | 🚧 Beta |
-| [`@matthew.ngo/analysis`](./analysis) | ![npm](https://img.shields.io/npm/v/@matthew.ngo/analysis) | Advanced text and data analysis tools | 🚧 Beta |
+| Package                                                 | Version                                                             | Description                                                    | Status    |
+| ------------------------------------------------------- | ------------------------------------------------------------------- | -------------------------------------------------------------- | --------- |
+| [`@matthew.ngo/chrome-storage`](./storage)              | ![npm](https://img.shields.io/npm/v/@matthew.ngo/chrome-storage)    | Advanced Chrome storage with encryption, compression, and sync | ✅ Stable |
+| [`@matthew.ngo/ai-toolkit`](./ai-toolkit)               | ![npm](https://img.shields.io/npm/v/@matthew.ngo/ai-toolkit)        | Multi-provider AI toolkit with caching and rate limiting       | ✅ Stable |
+| [`@matthew.ngo/content-extractor`](./content-extractor) | ![npm](https://img.shields.io/npm/v/@matthew.ngo/content-extractor) | Intelligent content extraction from web pages                  | 🚧 Beta   |
+| [`@matthew.ngo/analysis`](./analysis)                   | ![npm](https://img.shields.io/npm/v/@matthew.ngo/analysis)          | Advanced text and data analysis tools                          | 🚧 Beta   |
 
 ## 🚀 Quick Start
 
@@ -56,9 +57,13 @@ const analyzer = new AnalysisEngine();
 ### Setup
 
 ```bash
-# Clone repository
-git clone https://github.com/matthew-ngo/util-modules.git
+# Clone repository with submodules
+git clone --recursive https://github.com/matthew-ngo/util-modules.git
 cd util-modules
+
+# Or if already cloned, initialize submodules
+git submodule init
+git submodule update
 
 # Install dependencies
 pnpm install
@@ -72,6 +77,40 @@ pnpm test
 # Start development mode
 pnpm dev
 ```
+
+### Git Submodules Workflow
+
+This monorepo uses Git submodules for package management, allowing independent
+development and versioning:
+
+```bash
+# Update all submodules to latest
+git submodule update --remote
+
+# Update specific submodule
+git submodule update --remote packages/ai-toolkit
+
+# Work on a specific package
+cd packages/ai-toolkit
+git checkout -b feature/new-feature
+# Make changes...
+git add . && git commit -m "feat: add new feature"
+git push origin feature/new-feature
+
+# Update root repo to use new submodule commit
+cd ../..
+git add packages/ai-toolkit
+git commit -m "chore: update ai-toolkit submodule"
+```
+
+#### Submodule Structure
+
+Each package is an independent Git repository:
+
+- **content-extractor**: `git@github.com:maemreyo/content-extractor.git`
+- **ai-toolkit**: `git@github.com:maemreyo/ai-toolkit.git`
+- **analysis**: `git@github.com:maemreyo/analysis-toolkit.git`
+- **storage**: `git@github.com:maemreyo/chrome-storage.git`
 
 ### Monorepo Commands
 
@@ -226,8 +265,10 @@ MIT License - see [LICENSE](LICENSE) for details.
 ## 🆘 Support
 
 - 📖 **Documentation**: Check individual package READMEs
-- 🐛 **Issues**: [GitHub Issues](https://github.com/matthew-ngo/util-modules/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/matthew-ngo/util-modules/discussions)
+- 🐛 **Issues**:
+  [GitHub Issues](https://github.com/matthew-ngo/util-modules/issues)
+- 💬 **Discussions**:
+  [GitHub Discussions](https://github.com/matthew-ngo/util-modules/discussions)
 
 ---
 
