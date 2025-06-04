@@ -1,4 +1,3 @@
-// configs/tsconfig.base.json
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
@@ -8,7 +7,7 @@
     "jsx": "react-jsx",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    
+
     // Modules
     "module": "ESNext",
     "moduleResolution": "bundler",
@@ -17,7 +16,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    
+
     // Type Checking
     "strict": true,
     "noImplicitAny": true,
@@ -38,7 +37,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
-    
+
     // Emit
     "declaration": true,
     "declarationMap": true,
@@ -48,27 +47,18 @@
     "importsNotUsedAsValues": "remove",
     "downlevelIteration": true,
     "newLine": "lf",
-    
+
     // Interop Constraints
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "allowJs": false,
     "checkJs": false,
-    
+
     // Skip Lib Check
     "skipLibCheck": true,
-    
+
     // Advanced
     "assumeChangesOnlyAffectDirectDependencies": true
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build",
-    "coverage",
-    "**/*.spec.ts",
-    "**/*.test.ts",
-    "**/*.config.ts",
-    "**/*.config.js"
-  ]
+  "exclude": ["node_modules", "dist", "build", "coverage", "**/*.spec.ts", "**/*.test.ts", "**/*.config.ts", "**/*.config.js"]
 }

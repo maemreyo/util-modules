@@ -129,35 +129,100 @@ class ReleaseHelper {
     return types[answer] || 'patch';
   }
 
-  async runPreflightChecks() {
+  async runPreflightChecks(packages = null) {
     log.title('🔍 Running Preflight Checks');
 
     const checks = [
-      { name: 'Git status', cmd: 'git status --porcelain', expectEmpty: true },
-      { name: 'Tests', cmd: 'pnpm test', expectSuccess: true },
-      { name: 'Lint', cmd: 'pnpm lint', expectSuccess: true },
-      { name: 'Type check', cmd: 'pnpm typecheck', expectSuccess: true },
-      { name: 'Build', cmd: 'pnpm build', expectSuccess: true },
+      {
+        name: 'Git uncommitted changes',
+        cmd: 'git diff --quiet && git diff --staged --quiet',
+        expectSuccess: true,
+        skipOnFail: false,
+        errorMsg:
+          'You have uncommitted changes. Please commit or stash them first.',
+      },
+      {
+        name: 'Git branch',
+        cmd: 'git branch --show-current',
+        expectOutput: ['main', 'master', 'develop'],
+        skipOnFail: false,
+        errorMsg: 'You should release from main/master/develop branch',
+      },
+      {
+        name: 'Tests',
+        cmd: packages ? `pnpm --filter ${packages[0].name} test` : 'pnpm test',
+        expectSuccess: true,
+        skipOnFail: true,
+      },
+      {
+        name: 'Lint',
+        cmd: packages ? `pnpm --filter ${packages[0].name} lint` : 'pnpm lint',
+        expectSuccess: true,
+        skipOnFail: true,
+      },
+      {
+        name: 'Type check',
+        cmd: packages
+          ? `pnpm --filter ${packages[0].name} typecheck`
+          : 'pnpm typecheck',
+        expectSuccess: true,
+        skipOnFail: true,
+      },
+      {
+        name: 'Build',
+        cmd: packages
+          ? `pnpm --filter ${packages[0].name} build`
+          : 'pnpm build',
+        expectSuccess: true,
+        skipOnFail: false,
+      },
     ];
 
     let allPassed = true;
+    const failedChecks = [];
 
     for (const check of checks) {
       process.stdout.write(`  Checking ${check.name}... `);
 
       try {
-        const result = execSync(check.cmd, { encoding: 'utf8', stdio: 'pipe' });
-
-        if (check.expectEmpty && result.trim() !== '') {
-          log.error('Failed - working directory not clean');
-          allPassed = false;
-        } else {
+        if (check.expectSuccess) {
+          execSync(check.cmd, { encoding: 'utf8', stdio: 'pipe' });
           log.success('Passed');
+        } else if (check.expectOutput) {
+          const result = execSync(check.cmd, {
+            encoding: 'utf8',
+            stdio: 'pipe',
+          }).trim();
+          if (check.expectOutput.includes(result)) {
+            log.success(`Passed (${result})`);
+          } else {
+            log.warning(`Warning - on branch '${result}'`);
+            if (!check.skipOnFail) {
+              failedChecks.push(check);
+              allPassed = false;
+            }
+          }
         }
       } catch (error) {
-        log.error('Failed');
-        allPassed = false;
+        if (check.errorMsg) {
+          log.error(`Failed`);
+          console.log(`     ${check.errorMsg}`);
+        } else {
+          log.error('Failed');
+        }
+
+        if (!check.skipOnFail) {
+          failedChecks.push(check);
+          allPassed = false;
+        }
       }
+    }
+
+    if (failedChecks.length > 0) {
+      console.log('\n❌ Critical checks failed:');
+      failedChecks.forEach((check) => {
+        console.log(`   - ${check.name}`);
+      });
     }
 
     return allPassed;
@@ -271,7 +336,7 @@ ${summary}
           const versionType = await this.selectVersionBump();
 
           // Run preflight checks
-          const checksPass = await this.runPreflightChecks();
+          const checksPass = await this.runPreflightChecks(packages);
           if (!checksPass) {
             const force = await this.confirm('Checks failed. Continue anyway?');
             if (!force) break;
