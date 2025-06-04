@@ -29,7 +29,7 @@ const log = {
 
 async function createPackage() {
   const packageName = process.argv[2];
-  
+
   if (!packageName) {
     log.error('Please provide a package name');
     console.log(`Usage: pnpm create:package <package-name>`);
@@ -37,7 +37,7 @@ async function createPackage() {
   }
 
   const packageDir = join(rootDir, 'packages', packageName);
-  
+
   if (existsSync(packageDir)) {
     log.error(`Package "${packageName}" already exists`);
     process.exit(1);
@@ -46,11 +46,7 @@ async function createPackage() {
   log.info(`Creating package: ${colors.bright}${packageName}${colors.reset}`);
 
   // Create directory structure
-  const dirs = [
-    packageDir,
-    join(packageDir, 'src'),
-    join(packageDir, 'tests'),
-  ];
+  const dirs = [packageDir, join(packageDir, 'src'), join(packageDir, 'tests')];
 
   for (const dir of dirs) {
     await mkdir(dir, { recursive: true });
@@ -369,7 +365,7 @@ MIT © Matthew Ngo
 
   // .eslintrc.js
   const eslintConfig = `module.exports = {
-  extends: ['../../configs/eslint.base.js'],
+  extends: ['../../configs/eslint.base.cjs'],
   parserOptions: {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
@@ -392,7 +388,10 @@ MIT © Matthew Ngo
       rootTsConfig.references = [];
     }
     rootTsConfig.references.push({ path: `./packages/${packageName}` });
-    await writeFile(rootTsConfigPath, JSON.stringify(rootTsConfig, null, 2) + '\n');
+    await writeFile(
+      rootTsConfigPath,
+      JSON.stringify(rootTsConfig, null, 2) + '\n'
+    );
     log.success('Updated root tsconfig.json');
   }
 
@@ -400,7 +399,9 @@ MIT © Matthew Ngo
   execSync('pnpm install', { cwd: rootDir, stdio: 'inherit' });
 
   console.log('');
-  log.success(`${colors.bright}Package "${packageName}" created successfully!${colors.reset}`);
+  log.success(
+    `${colors.bright}Package "${packageName}" created successfully!${colors.reset}`
+  );
   console.log('');
   console.log('Next steps:');
   console.log(`  1. cd packages/${packageName}`);

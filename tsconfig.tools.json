@@ -10,12 +10,8 @@
       "@matthew.ngo/analysis": ["packages/analysis/src"],
       "@matthew.ngo/*": ["packages/*/src"]
     },
-    "composite": true,
-    "declarationMap": true,
-    "incremental": true,
-    "tsBuildInfoFile": ".tsbuildinfo"
+    "types": ["vitest/globals", "node"]
   },
-  "include": [],
-  "references": [{ "path": "./packages/storage" }, { "path": "./packages/ai-toolkit" }, { "path": "./packages/content-extractor" }, { "path": "./packages/analysis" }],
-  "exclude": ["node_modules", "**/node_modules", "**/dist", "**/build", "**/coverage", "**/*.spec.ts", "**/*.test.ts", "/test-utils/**"]
+  "include": ["test-utils/**/*", "docs/.vitepress/**/*"],
+  "exclude": ["node_modules", "**/node_modules", "**/dist", "**/build", "**/coverage"]
 }

@@ -2,23 +2,13 @@ import { defineConfig } from 'vitepress';
 
 export default defineConfig({
   title: 'Util Modules',
-  description: 'A collection of utility modules for modern web development',
-  
-  // Paths
-  srcDir: './src',
-  outDir: './dist',
-  cacheDir: './.vitepress/cache',
-  
-  // Theme
+  description: 'A comprehensive collection of utility modules',
   themeConfig: {
-    logo: '/logo.svg',
-    
     nav: [
+      { text: 'Home', link: '/' },
       { text: 'Guide', link: '/guide/' },
-      { text: 'Packages', link: '/packages/' },
-      { text: 'API', link: '/api/' }
+      { text: 'API', link: '/api/' },
     ],
-    
     sidebar: {
       '/guide/': [
         {
@@ -26,50 +16,22 @@ export default defineConfig({
           items: [
             { text: 'Introduction', link: '/guide/' },
             { text: 'Installation', link: '/guide/installation' },
-            { text: 'Quick Start', link: '/guide/quick-start' }
-          ]
-        }
-      ],
-      
-      '/packages/': [
+            { text: 'Quick Start', link: '/guide/quick-start' },
+          ],
+        },
         {
           text: 'Packages',
           items: [
-            { text: 'Overview', link: '/packages/' },
-            { text: 'Chrome Storage', link: '/packages/storage/' },
-            { text: 'AI Toolkit', link: '/packages/ai-toolkit/' },
-            { text: 'Content Extractor', link: '/packages/content-extractor/' },
-            { text: 'Analysis', link: '/packages/analysis/' }
-          ]
-        }
-      ]
+            { text: 'Chrome Storage', link: '/guide/storage' },
+            { text: 'AI Toolkit', link: '/guide/ai-toolkit' },
+            { text: 'Content Extractor', link: '/guide/content-extractor' },
+            { text: 'Analysis', link: '/guide/analysis' },
+          ],
+        },
+      ],
     },
-    
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/matthew-ngo/util-modules' }
+      { icon: 'github', link: 'https://github.com/matthew-ngo/util-modules' },
     ],
-    
-    footer: {
-      message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2025 Matthew Ngo'
-    },
-    
-    search: {
-      provider: 'local'
-    }
   },
-  
-  // Markdown
-  markdown: {
-    lineNumbers: true,
-    theme: {
-      light: 'github-light',
-      dark: 'github-dark'
-    }
-  },
-  
-  // Build
-  build: {
-    chunkSizeWarningLimit: 1600
-  }
 });

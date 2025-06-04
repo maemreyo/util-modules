@@ -34,7 +34,11 @@ module.exports = {
     'import/resolver': {
       typescript: {
         alwaysTryTypes: true,
-        project: ['./tsconfig.json', './packages/*/tsconfig.json'],
+        project: [
+          './tsconfig.json',
+          './tsconfig.tools.json',
+          './packages/*/tsconfig.json',
+        ],
       },
     },
   },
@@ -140,17 +144,17 @@ module.exports = {
   },
   overrides: [
     // Test files
-    {
-      files: ['**/*.test.ts', '**/*.spec.ts'],
-      env: {
-        jest: true,
-      },
-      rules: {
-        '@typescript-eslint/no-explicit-any': 'off',
-        '@typescript-eslint/no-non-null-assertion': 'off',
-        'import/no-extraneous-dependencies': 'off',
-      },
-    },
+    // {
+    //   files: ['**/*.test.ts', '**/*.spec.ts'],
+    //   env: {
+    //     jest: true,
+    //   },
+    //   rules: {
+    //     '@typescript-eslint/no-explicit-any': 'off',
+    //     '@typescript-eslint/no-non-null-assertion': 'off',
+    //     'import/no-extraneous-dependencies': 'off',
+    //   },
+    // },
     // Config files
     {
       files: ['**/*.config.ts', '**/*.config.js'],
