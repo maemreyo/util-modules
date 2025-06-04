@@ -1,0 +1,12 @@
+[submodule "packages/content-extractor"]
+	path = packages/content-extractor
+	url = git@github.com:maemreyo/content-extractor.git
+[submodule "packages/ai-toolkit"]
+	path = packages/ai-toolkit
+	url = git@github.com:maemreyo/ai-toolkit.git
+[submodule "packages/analysis"]
+	path = packages/analysis
+	url = git@github.com:maemreyo/analysis-toolkit.git
+[submodule "packages/storage"]
+	path = packages/storage
+	url = git@github.com:maemreyo/chrome-storage.git
